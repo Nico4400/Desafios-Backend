@@ -1,0 +1,80 @@
+
+{{!-- <form action="/api/products" method="post">
+    <label>Nombre: </label> <input type="text" name="title" />
+    <br />
+    <br />
+    <label>Descripción: </label> <input type="text" name="description" />
+    <br />
+    <br />
+    <label>Code: </label> <input type="text" name="code" />
+    <br />
+    <br />
+    <label>Precio: </label> <input type="number" name="price" />
+    <br />
+    <br />
+    <label>Stock: </label> <input type="number" name="stock" />
+    <br />
+    <br />
+    <label>Imagen: </label> <input type="text" name="thumbnail" />
+    <br />
+    <br />
+    <button type="submit">Agregar Producto</button>
+</form> --}}
+
+<!-- Formulario para crear un producto -->
+<form id="createProductForm">
+    <label>Nombre: </label> <input type="text" id="productName" required />
+    <br>
+    <br>
+    <label>Descripción: </label> <input type="text" id="productDescription" required />
+    <br>
+    <br>
+    <label>Código: </label> <input type="text" id="productCode" required />
+    <br>
+    <br>
+    <label>Precio: </label> <input type="number" id="productPrice" required />
+    <br>
+    <br>
+    <label>Stock: </label> <input type="number" id="productStock" required />
+    <br>
+    <br>
+    <label>Imagen: </label> <input type="text" id="productThumbnail" required />
+    <br>
+    <br>
+    <button type="button" onclick="createProduct()">Agregar Producto</button>
+    <br>
+    <br>
+    <br>
+</form>
+
+<!-- Formulario para eliminar un producto -->
+<form id="deleteProductForm">
+    <label>ID del Producto a Eliminar: </label> <input type="number" id="productIdToDelete" required/>
+    <br>
+    <br>
+    <button type="button" onclick="deleteProduct()">Eliminar Producto</button>
+    <br>
+</form>
+
+{{!-- <div>
+    <h1>Lista de Productos</h1>
+    <ul>
+        {{#each products}}
+            <li>
+                <h2>{{title}}</h2>
+                <p>{{description}}</p>
+                <p>Código: {{code}}</p>
+                <p>Precio: ${{price}}</p>
+                <p>Stock: {{stock}}</p>
+                <img src="{{thumbnail}}" alt="{{title}}" width="100">
+            </li>
+        {{/each}}
+    </ul>
+</div> --}}
+
+{{!-- Para crear el listado de Productos --}}
+<ul id="productList"></ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
+
