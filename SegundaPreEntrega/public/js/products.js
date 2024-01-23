@@ -2,7 +2,7 @@ const btns = document.getElementsByTagName('button');
 
 const addProductToCart = async (pId) => {
     try {
-        const result = await fetch(`http://localhost:8080/api/carts/65a42d08c3a736e56b2c2915/product/${pId}`, {
+        const result = await fetch(`http://localhost:8080/api/carts/65a9b43164a214c434b6a8c4/product/${pId}`, {
             body: JSON.stringify({
                 quantity: 1
             }),
