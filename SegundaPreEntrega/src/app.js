@@ -29,6 +29,16 @@ app.set('view engine', 'handlebars');
 
 mongoose.connect('mongodb+srv://nicofernandezcastillo:ZGbu27XHwKxE0MJR@cluster0.y9gfodj.mongodb.net/ecommerce');
 
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+    console.error('Error de conexión a MongoDB:', err);
+});
+
+db.once('open', () => {
+    console.log('Conexión a MongoDB establecida con éxito');
+});
+
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/chats', chatsRouter)

@@ -21,11 +21,11 @@ viewsRouters.get('/home', async (req, res) => {
 viewsRouters.get('/realtimeproducts', async (req, res) => {    
     try {
         const products = await productManager.getProducts();
-        res.status(200).json({products});   
+        // res.status(200).json({products});   
         return res.render('realTimeProducts', { title: "RealTime Products", data: products.rdo });     
     } catch (error) {
         console.error(error);
-        res.status(400).json({message: 'products not fopund'});
+        res.status(400).json({message: 'products not found'});
     }
 });
 
@@ -35,7 +35,7 @@ viewsRouters.post('/realtimeproducts', async (req, res) => {
         const products = await productManager.addProduct(product);
         return res.render('realTimeProducts', { title: "RealTime Products", data: products.rdo });        
     } catch (error) {
-        res.status(400).json({message: err});
+        res.status(400).json({ message: 'Hubo un error al procesar la solicitud.' });
     }
 });
 

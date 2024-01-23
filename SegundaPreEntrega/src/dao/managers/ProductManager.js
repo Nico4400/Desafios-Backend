@@ -29,7 +29,7 @@ class ProductManager {
             if (prod) {
                 return {message: "ERROR" , rdo: "Producto con código existente!"}
             } else {
-            const added = productModel.create(product);
+            const added = await productModel.create(product);
             return {message: "OK" , rdo: "Producto dado de alta correctamente"}
             }
         } catch (e) {
@@ -51,7 +51,7 @@ class ProductManager {
             delete parseProducts.docs;
             return { message: 'OK', ...parseProducts}
         } catch (error) {
-            return {message: 'ERROR' , rdo: 'No products'}
+            return { message: 'ERROR', rdo: `Error al obtener los productos - ${error.message}` }
         }
     }
 
