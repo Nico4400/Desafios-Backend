@@ -23,7 +23,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
-mongoose.connect('mongodb+srv://nicofernandezcastillo:ZGbu27XHwKxE0MJR@cluster0.y9gfodj.mongodb.net/');
+mongoose.connect('mongodb+srv://nicofernandezcastillo:ZGbu27XHwKxE0MJR@cluster0.y9gfodj.mongodb.net/ecommerce');
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
