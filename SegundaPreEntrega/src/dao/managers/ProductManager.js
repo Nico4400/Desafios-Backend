@@ -4,39 +4,6 @@ import { productModel } from '../models/product.model.js';
 // Declaro la clase.
 class ProductManager {    
 
-    // Metodo para agregar Productos.
-    async addProduct(product){
-        try {
-            let prod = [];
-            if(
-                !product.title ||
-                !product.description ||
-                !product.code ||
-                !product.price ||
-                !product.stock ||
-                !product.status ||
-                !product.category ||
-                !product.thumbnail
-            ) {
-                return {message: "ERROR" , rdo: "Faltan datos en el producto a ingresar!"}
-            }
-            const products = await this.getProducts();
-            if (products.message === "OK") {
-                prod = products.rdo.find((e) => e.code === product.code);
-            } else {
-                return {message: "ERROR" , rdo: "No se pudieron obtener los productos"}
-            }
-            if (prod) {
-                return {message: "ERROR" , rdo: "Producto con código existente!"}
-            } else {
-            const added = await productModel.create(product);
-            return {message: "OK" , rdo: "Producto dado de alta correctamente"}
-            }
-        } catch (e) {
-            return {message: "ERROR" , rdo: "Error al agregar el producto - " + e.message}
-        }        
-    }
-
     // Obtengo los Productos.
     async getProducts(limit = 10, page = 1, query = '', sort = '') {
         try {
@@ -53,6 +20,44 @@ class ProductManager {
         } catch (error) {
             return { message: 'ERROR', rdo: `Error al obtener los productos - ${error.message}` }
         }
+    }
+
+    // Metodo para agregar Productos.
+    async addProduct(product){
+        try {
+            // let prod = [];
+            //Validacion de los campos
+            const validacion =
+                !product.title ||
+                !product.description ||
+                !product.code ||
+                !product.price ||
+                !product.stock ||
+                !product.status ||
+                !product.category ||
+                !product.thumbnail ? false : true;
+
+            if(!validacion)
+                return {message: "ERROR" , rdo: "Faltan datos en el producto a ingresar!"}
+                        
+            const products = await this.getProducts();
+
+            if (products.message !== "OK") {
+                return { message: "ERROR", rdo: "No se pudieron obtener los productos correctamente" };
+            }
+            const productArray = Array.isArray(products.rdo) ? products.rdo : [];
+
+            const prod = productArray.find((e) => e.code === product.code);
+
+            if (prod) {
+                return { message: "ERROR", rdo: "Producto con código existente!" };
+            } else {
+                const added = await productModel.create(product);
+                return { message: "OK", rdo: "Producto dado de alta correctamente" };
+            }
+        } catch (e) {
+            return {message: "ERROR" , rdo: "Error al agregar el producto - " + e.message}
+        }        
     }
 
     // Busco Prod por ID.

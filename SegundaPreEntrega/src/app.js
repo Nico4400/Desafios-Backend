@@ -70,6 +70,7 @@ io.on('connection', socket => {
     // Actualización a todos los clientes
     const emitProductUpdate = async () => {
         const updatedProducts = await productManager.getProducts();
+        console.log('Type of updatedProducts:', typeof updatedProducts);
         io.emit('update_products', updatedProducts);
     };    
 

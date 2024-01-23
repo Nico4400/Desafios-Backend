@@ -49,7 +49,8 @@ socket.on('update_products', (products) => {
 
     // Actualizar la lista de productos
     const productList = document.getElementById('productList');
-    products.forEach(product => {
+    console.log('Type of products:', products.payload);
+    products.payload.forEach(product => {
         const listItem = document.createElement('li');
         listItem.classList.add('product');
 

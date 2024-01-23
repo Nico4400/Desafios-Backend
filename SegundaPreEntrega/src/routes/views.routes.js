@@ -29,15 +29,15 @@ viewsRouters.get('/realtimeproducts', async (req, res) => {
     }
 });
 
-viewsRouters.post('/realtimeproducts', async (req, res) => {
-    try {
-        const product = req.body;
-        const products = await productManager.addProduct(product);
-        return res.render('realTimeProducts', { title: "RealTime Products", data: products.rdo });        
-    } catch (error) {
-        res.status(400).json({ message: 'Hubo un error al procesar la solicitud.' });
-    }
-});
+// viewsRouters.post('/realtimeproducts', async (req, res) => {
+//     try {
+//         const product = req.body;
+//         const products = await productManager.addProduct(product);
+//         return res.render('realTimeProducts', { title: "RealTime Products", data: products.rdo });        
+//     } catch (error) {
+//         res.status(400).json({ message: 'Hubo un error al procesar la solicitud.' });
+//     }
+// });
 
 viewsRouters.get('/products', async (req, res) => {
     const { page } = req.query;
