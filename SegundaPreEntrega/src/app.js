@@ -9,6 +9,7 @@ import cartsRouter from './routes/carts.routes.js';
 import chatsRouter from './routes/chats.routes.js';
 
 import ProductManager from './dao/managers/ProductManager.js';
+import { ChatManager } from './dao/managers/ChatManager.js';
 
 const PORT = 8080;
 const app = express();
@@ -51,6 +52,8 @@ const httpServer = app.listen(PORT, () => {
 const io = new Server(httpServer);
 
 const productManager = new ProductManager();
+const chatManager = new ChatManager();
+
 
 io.on('connection', socket => {
     console.log('Nuevo cliente conectado');
@@ -59,6 +62,7 @@ io.on('connection', socket => {
         console.log(data);
         // Para ver los productos cuando se conecta el cliente
         emitProductUpdate();
+        emitChatsUpdate();
     });
 
     // Para ver cómo funciona
@@ -91,4 +95,19 @@ io.on('connection', socket => {
         // Actualización a todos los clientes después de eliminar un producto
         emitProductUpdate();
     });
+
+
+    // Actualización a todos los chats
+    const emitChatsUpdate = async () => {        
+        const getChats = await chatManager.getChats();
+        io.emit('chatLogs', getChats);
+    };
+
+    // Crear un chat
+    socket.on('create_chat', async data => {
+        await chatManager.addChat(data);    
+        // Actualización a todos los clientes después de crear un Chat
+        emitChatsUpdate();
+    });
+
 });

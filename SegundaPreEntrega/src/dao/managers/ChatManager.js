@@ -2,7 +2,7 @@ import { chatModel } from "../models/chat.model.js";
 
 
 export class ChatManager {
-    async getChat() {
+    async getChats() {
         try {
             const parseChats = await chatModel.find().lean()
             return {message: "OK" , rdo: parseChats}

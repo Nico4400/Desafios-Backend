@@ -8,7 +8,7 @@ chatsRouter.get("/", async (req, res) => {
     try {
         const { limit } = req.query;
         const chat = new ChatManager();    
-        const response = await chat.getChat();    
+        const response = await chat.getChats();    
         if (response.message === "OK") {
             if (!limit) 
                 return res.status(200).json(response);    
