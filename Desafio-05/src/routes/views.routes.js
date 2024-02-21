@@ -36,4 +36,8 @@ viewsRouters.post('/realtimeproducts', async (req, res) => {
     return res.render('realTimeProducts', { products });
 });
 
+viewsRouters.get('/chat', async (req, res) => {
+    res.render('chat')
+})
+
 export default viewsRouters;

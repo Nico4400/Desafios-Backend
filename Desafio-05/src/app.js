@@ -11,6 +11,7 @@ import chatsRouter from './routes/chats.routes.js';
 import { productModel } from './dao/models/product.model.js';
 // import ProductManager from './dao/ProductManager.js';
 // const productManager = new ProductManager('./src/Products.json');
+import { ChatManager } from './dao/ChatManager.js';
 
 const PORT = 8080;
 const app = express();
@@ -19,11 +20,27 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
-app.engine('handlebars', handlebars.engine());
+const hbs = handlebars.create({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true
+    }
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
 mongoose.connect('mongodb+srv://nicofernandezcastillo:ZGbu27XHwKxE0MJR@cluster0.y9gfodj.mongodb.net/ecommerce');
+
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+    console.error('Error de conexión a MongoDB:', err);
+});
+
+db.once('open', () => {
+    console.log('Conexión a MongoDB establecida con éxito');
+});
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
@@ -36,6 +53,8 @@ const httpServer = app.listen(PORT, () => {
 
 const io = new Server(httpServer);
 
+const chatManager = new ChatManager();
+
 io.on('connection', socket => {
     console.log('Nuevo cliente conectado');
     
@@ -43,6 +62,7 @@ io.on('connection', socket => {
         console.log(data);
         // Para ver los productos cuando se conecta el cliente
         emitProductUpdate();
+        emitChatsUpdate();
     });
 
     // Para ver cómo funciona
@@ -74,4 +94,18 @@ io.on('connection', socket => {
         // Actualización a todos los clientes después de eliminar un producto
         emitProductUpdate();
     });
+
+    // Actualización a todos los chats
+    const emitChatsUpdate = async () => {        
+        const getChats = await chatManager.getChats();
+        io.emit('chatLogs', getChats);
+    };
+
+    // Crear un chat
+    socket.on('create_chat', async data => {
+        await chatManager.addChat(data);    
+        // Actualización a todos los clientes después de crear un Chat
+        emitChatsUpdate();
+    });
+
 });
