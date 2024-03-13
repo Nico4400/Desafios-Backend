@@ -5,6 +5,8 @@ import { userModel } from '../dao/models/user.model.js';
 import { createHash, isValidPassword } from '../utils/bcrypt.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
+import { userService } from '../dao/repositories/index.repository.js';
+
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
@@ -13,8 +15,8 @@ const initializePassport = () => {
         async (req, username, password, done) => {
             const {first_name, last_name, email, age} = req.body;
             try {
-                const userManager = new UserManager();
-                const user = await userManager.getUser(username);
+                // const userManager = new UserManager();
+                const user = await userService.getUser(username);
                 if(user.message === 'OK'){
                     console.log('User already exists');
                     return done(null, false);
@@ -27,7 +29,7 @@ const initializePassport = () => {
                     password: createHash(password)
                 }
 
-                const result = await userManager.addUser(newUser);
+                const result = await userService.registerUser(newUser);
                 console.log(result);
                 return done(null, result);
             } catch (error) {

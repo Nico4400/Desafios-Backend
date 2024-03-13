@@ -36,7 +36,12 @@ export class UserManager {
             const added = await userModel.create(user);
             return {message: "OK" , rdo: added}
         } catch (err) {
-            res.status(400).json({ message: "Error al dar de alta el usiario - " + err.menssage })
+            console.error("Error al dar de alta el usuario:", user);
+            if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
+                return { message: "ERROR", rdo: `El correo electrónico '${err.keyValue.email}' ya está en uso.` };
+            } else {
+                return { message: "ERROR", rdo: "Error al dar de alta el usuario: " + err.message };
+            }
         }
     }
   

@@ -7,7 +7,7 @@ export default class UserRepository {
 
     registerUser = async (userData) => {
         const newUser = new UserDTO(userData);
-        const result = await this.dao.create(newUser);
+        const result = await this.dao.addUser(newUser);
         return result;
     }
 
@@ -37,8 +37,8 @@ export default class UserRepository {
         return result;
     }
 
-    getUserByEmail = async (email) => {
-        const user = await this.dao.getUserByEmail(email);
+    getUser = async (email) => {
+        const user = await this.dao.getUser(email);
         if (!user) {
             throw new Error('Usuario no encontrado');
         }

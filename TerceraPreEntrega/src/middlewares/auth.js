@@ -34,7 +34,7 @@ export const authorization = (role) => {
     return async(req,res,next)=>{
         if (req.session?.user)
       {
-        if (req.session?.user.rol !== role){
+        if (req.session?.user.role !== role){
             return res.status(403).send({error: 'No permissions'})
         }
       }
