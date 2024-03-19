@@ -1,12 +1,30 @@
 <h1>Cart # {{cId}}</h1>
+<input type="hidden" id="cId" value="{{cId}}">
 
-{{#each cart.rdo}}
-<div>
-    <h3>{{this.product.title}}</h3>
-    <span>Cantidad: </span>{{this.quantity}}</span>
-    <br />
-    <span>Precio Unitario: ${{this.product.price}}</span>
+<div id="cartContainer">
+    {{#each cart.rdo}}
+        <div>
+            <h3>Producto: {{this.product.title}}</h3>
+            <span>Cantidad: </span>{{this.quantity}}</span>
+            <br />
+            <span>Precio Unitario: ${{this.product.price}}</span>
+        </div>
+        <br />
+        <br />
+    {{/each}}
 </div>
-<br />
-<br />
-{{/each}}
+
+
+{{#if cart.rdo.length}}
+    <form action="/api/carts/{{cId}}/purchase" method="post" id="buyForm">
+        <button>Buy Cart</button>
+    </form>
+    <br />
+        <button type="button" id="emptyCartBtn">Empty Cart</button>
+    <br />
+    <br />
+{{/if}}
+<button type="button"><a href="http://localhost:8080/products">Go to Products</a></button>
+
+
+<script src="/js/cart.js"></script>

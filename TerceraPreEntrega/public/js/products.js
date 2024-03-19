@@ -1,8 +1,14 @@
-const btns = document.getElementsByTagName('button');
+const cId = document.getElementById('cId').value;
+const btns = document.querySelectorAll('#pId');
+const logoutBtn = document.getElementById('logoutBtn');
 
 const addProductToCart = async (pId) => {
     try {
-        const result = await fetch(`http://localhost:8080/api/carts/65a9b43164a214c434b6a8c4/product/${pId}`, {
+        if (!cId) {
+            alert('No se ha proporcionado el ID del carrito');
+            return;
+        }
+        const result = await fetch(`http://localhost:8080/api/carts/${cId}/product/${pId}`, {
             body: JSON.stringify({
                 quantity: 1
             }),
@@ -21,8 +27,20 @@ const addProductToCart = async (pId) => {
     }
 }
 
-for(let btn of btns) {
+btns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-        addProductToCart(btn.id);
+        addProductToCart(btn.value);
+    })
+});
+
+logoutBtn.addEventListener('click', async (e) => {
+    const result = await fetch('http://localhost:8080/api/sessions/logout', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
-}
+
+    const {redirect} = await result.json();
+    window.location.href = redirect;
+});

@@ -1,4 +1,4 @@
-export function generarCodigoAleatorio() {
+export function generateCode() {
   var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   var codigo = '';
 

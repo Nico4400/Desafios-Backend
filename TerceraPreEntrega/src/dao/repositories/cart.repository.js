@@ -7,83 +7,66 @@ export default class CartRepository {
 
     // Obtener todos los carritos
     getCarts = async () => {
-        const result = await this.dao.getAll();
+        const result = await this.dao.getCarts();
         return result;
     }
 
     // Obtener un carrito por su ID
-    getCartById = async (cartId) => {
-        const result = await this.dao.getById(cartId);
+    getCartById = async (cId) => {
+        const result = await this.dao.getCartById(cId);
         return result;
     }
 
     // Crear un nuevo carrito
     postCart = async () => {
         const newCart = new CartDTO({ products: [] });
-        const result = await this.dao.create(newCart);
+        const result = await this.dao.postCart(newCart);
         return result;
     }
 
-    // Agregar un producto a un carrito
-    postProductInCart = async (cartId, productId, quantity) => {
-        const cart = await this.dao.getById(cartId);
-        if (cart) {
-            const product = {
-                productId,
-                quantity
-            };
-            cart.products.push(product);
-            await cart.save();
-            return { message: "OK", rdo: "Producto agregado al carrito correctamente" };
-        } else {
-            return { message: "ERROR", rdo: "El carrito no existe" };
-        }
+    // // Agregar un producto a un carrito
+    // postProductInCart = async (cartId, productId, quantity) => {
+    //     const cart = await this.dao.postProductInCart(cartId);
+    //     if (cart) {
+    //         const product = {
+    //             productId,
+    //             quantity
+    //         };
+    //         cart.products.push(product);
+    //         await cart.save();
+    //         return { message: "OK", rdo: "Producto agregado al carrito correctamente" };
+    //     } else {
+    //         return { message: "ERROR", rdo: "El carrito no existe" };
+    //     }
+    // }
+
+     // Agregar un producto a un carrito
+     postProductInCart = async (cId, pId, quantity) => {
+        const result = await this.dao.postProductInCart(cId, pId, quantity);
+        return result
     }
 
     // Eliminar todos los productos de un carrito
-    deleteAllCartById = async (cartId) => {
-        const cart = await this.dao.getById(cartId);
-        if (cart) {
-            cart.products = [];
-            await cart.save();
-            return { message: "OK", rdo: "Todos los productos eliminados del carrito correctamente" };
-        } else {
-            return { message: "ERROR", rdo: "El carrito no existe" };
-        }
+    deleteAllProductsInCart = async (cId) => {
+        const result = await this.dao.deleteAllProductsInCart(cId);
+        return result
     }
 
     // Eliminar un producto de un carrito
-    deleteProductInCart = async (cartId, productId) => {
-        const cart = await this.dao.getById(cartId);
-        if (cart) {
-            cart.products = cart.products.filter(product => product.productId !== productId);
-            await cart.save();
-            return { message: "OK", rdo: "Producto eliminado del carrito correctamente" };
-        } else {
-            return { message: "ERROR", rdo: "El carrito no existe" };
-        }
+    deleteProductInCart = async (cd, pId) => {
+        const result = await this.dao.deleteProductInCart(cId, pId);
+        return result
     }
 
     // Actualizar un carrito por su ID
-    putCartById = async (cartId, newData) => {
-        const result = await this.dao.update(cartId, newData);
+    updateCart = async (cId, cart) => {
+        const result = await this.dao.updateCart(cId, cart);
         return result;
     }
 
     // Actualizar la cantidad de un producto en un carrito
-    putProductInCart = async (cartId, productId, quantity) => {
-        const cart = await this.dao.getById(cartId);
-        if (cart) {
-            const product = cart.products.find(product => product.productId === productId);
-            if (product) {
-                product.quantity = quantity;
-                await cart.save();
-                return { message: "OK", rdo: "Cantidad del producto actualizada en el carrito correctamente" };
-            } else {
-                return { message: "ERROR", rdo: "El producto no existe en el carrito" };
-            }
-        } else {
-            return { message: "ERROR", rdo: "El carrito no existe" };
-        }
+    updateProductInCart = async (cId, pId, quantity) => {
+        const result = await this.dao.updateProductInCart(cId, pId, quantity);
+        return result;
     }
 }

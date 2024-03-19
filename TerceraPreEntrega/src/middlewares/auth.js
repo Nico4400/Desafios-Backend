@@ -10,7 +10,7 @@ export const checkAuth = (req, res, next) => {
 } 
 
 export const checkExistingUser = (req, res, next) => {
-    if(req.session.user){
+    if(req.user){
         return res.redirect('/');
     }
     next();
@@ -34,8 +34,9 @@ export const authorization = (role) => {
     return async(req,res,next)=>{
         if (req.session?.user)
       {
-        if (req.session?.user.role !== role){
-            return res.status(403).send({error: 'No permissions'})
+        if (req.user.rdo.role !== role){
+            console.log(req.user);
+            return res.status(403).send({error: 'Not permissions'})
         }
       }
       else

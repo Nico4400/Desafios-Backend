@@ -1,5 +1,6 @@
 // import ProductManager from "../dao/managers/ProductManager.js";
 import { productService } from "../dao/repositories/index.repository.js";
+import ProductDTO from "../dtos/product.dto.js";
 
 export const getProducts = async (req, res) => {
     try {
@@ -33,8 +34,8 @@ export const getProductById = async (req, res) => {
 
 export const postProduct = async (req, res) => {
     try {
-        const newProduct = req.body;
-        const response = await productService.postProduct(newProduct);
+        const newProduct = new ProductDTO(req.body);
+        const response = await productService.addProduct(newProduct);
         res.status(201).json(response);
     } catch (err) {
         console.log(err);
@@ -46,7 +47,7 @@ export const putProduct = async (req, res) => {
     try {
         const { pId } = req.params;
         const updateProd = req.body;
-        const response = await productService.putProduct(pId, updateProd);
+        const response = await productService.updateProduct(pId, updateProd);
         if (response.message === 'OK') {
             res.status(200).json(response);
         } else {

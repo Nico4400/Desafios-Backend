@@ -19,13 +19,12 @@ export default class ProductRepository {
         return response;
     }
 
-    async postProduct(productData) {
-        const newProduct = new ProductDTO(productData);
-        const response = await this.dao.addProduct(newProduct);
+    async addProduct(productData) {
+        const response = await this.dao.addProduct(productData);
         return response;
     }
 
-    async putProduct(productId, newData) {
+    async updateProduct(productId, newData) {
         const response = await this.dao.updateProduct(productId, newData);
         return response;
     }

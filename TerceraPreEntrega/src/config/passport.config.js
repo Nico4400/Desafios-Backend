@@ -5,7 +5,7 @@ import { userModel } from '../dao/models/user.model.js';
 import { createHash, isValidPassword } from '../utils/bcrypt.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
-import { userService } from '../dao/repositories/index.repository.js';
+import { userService , cartService } from '../dao/repositories/index.repository.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -13,7 +13,7 @@ const initializePassport = () => {
     passport.use('register', new LocalStrategy(
         {passReqToCallback: true, usernameField: 'email'},
         async (req, username, password, done) => {
-            const {first_name, last_name, email, age} = req.body;
+            const {first_name, last_name, email, age, role, cart } = req.body;
             try {
                 // const userManager = new UserManager();
                 const user = await userService.getUser(username);
@@ -21,16 +21,21 @@ const initializePassport = () => {
                     console.log('User already exists');
                     return done(null, false);
                 }
+                const cart = await cartService.postCart();
+                const cartId = cart.rdo._id
+                console.log("id",cartId);
                 const newUser = {
                     first_name,
-                    last_name,
+                    last_name,  
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    role,
+                    cart: cartId
                 }
-
-                const result = await userService.registerUser(newUser);
-                console.log(result);
+                
+                const result = await userService.addUser(newUser);
+                console.log("aca",result);
                 return done(null, result);
             } catch (error) {
                 return done('Error to obtain the user ' + error);
@@ -42,10 +47,12 @@ const initializePassport = () => {
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                const userManager = new UserManager();
-                const user = await userManager.getUser(username);
+                // const userManager = new UserManager();
+                // const user = await userManager.getUser(username);
+                const user = await userService.getUser(username);
+                console.log("au",user);
                 if(user.message !== 'OK'){
-                    console.log('User doenst exists');
+                    console.log('User doenst exists', user);
                     return done(null, false);
                 }
                 if(!isValidPassword(user, password)){
@@ -95,7 +102,7 @@ const initializePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findOne({_id: id});
+        const user = await userService.getUserId({_id: id});
         console.log('Deserialized user:', user);
         done(null, user);
     });

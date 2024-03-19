@@ -38,11 +38,11 @@ class CartManager {
         }
     }
     
-    async addProductsInCart(cId, pId, quantity) {
+    async postProductInCart(cId, pId, quantity) {
         try {
             const cart = await cartModel.findOne({_id: cId});
             if(cart) {
-                const existingProducts = cart.products.find(product => product.product.toString() === pId);
+                const existingProducts = cart.products.find(product => product.product.toString() === pId);  
                 if(existingProducts) {
                     existingProducts.quantity += quantity;
                 } else {
@@ -58,10 +58,10 @@ class CartManager {
         }
     }
     
-    async addCart(products) {
+    async postCart(products) {
         try {
             const added = await cartModel.create(products);        
-            return {message: "OK" , rdo: "Carrito dado de alta correctamente"}
+            return {message: "OK" , rdo: added}
         } catch (e) {
             return {message: "ERROR" , rdo: "Error al agregar el carrito." + e.message}
         }

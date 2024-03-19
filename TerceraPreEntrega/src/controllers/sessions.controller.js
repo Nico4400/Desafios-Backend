@@ -1,11 +1,22 @@
 import { userService } from "../dao/repositories/index.repository.js";
 import { createHash } from "../utils/bcrypt.js";
+import UserDTO from "../dtos/user.dto.js";
 
 export const postRegister = async (req, res) => {
     try {
-        const userData = req.body;
-        const result = await userService.registerUser(userData);
-        res.status(201).json({ message: "User registered", data: result });
+        const userData = req.user;
+        console.log("user",userData);
+        if (!req.user) {            
+            return res.status(400).json({ message: 'Error with credentials' });
+        }
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            age: req.user.age,
+            email: req.user.email,
+            role: req.user.role
+        }
+        res.redirect('/');
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -20,7 +31,8 @@ export const postLogin = async (req, res) => {
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             age: req.user.age,
-            email: req.user.email
+            email: req.user.email,
+            role: req.user.role
         }
         res.redirect('/');
     } catch (error) {

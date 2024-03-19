@@ -33,7 +33,6 @@ class ProductManager {
                 !product.code ||
                 !product.price ||
                 !product.stock ||
-                !product.status ||
                 !product.category ||
                 !product.thumbnail ? false : true;
 

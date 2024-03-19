@@ -34,15 +34,16 @@ export const postRealTimeProducts = async (req, res) => {
 };
 
 export const getProducts = async (req, res) => {
+    const user = req.user;
     const { page } = req.query;
     const products = await productManager.getProducts(10, page);
-    res.render('products', products);
+    res.render('products', {products, user});
 };
 
 export const getCartById = async (req, res) => {
     const { cId } = req.params; 
     const cart = await cartManager.getProductsCartById(cId);
-    console.log(cId);
+    console.log(cId, cart);
     res.render('cart', { cart, cId });
 };
 
@@ -59,7 +60,8 @@ export const getChat = async (req, res) => {
 
 // Vistas para acceso
 export const getIndex = (req, res) => {
-    const {user} = req.session;
+    const user = req.user;
+    console.log(user)
     res.render('index', user.rdo);
 };
 

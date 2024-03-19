@@ -5,19 +5,22 @@ export default class UserRepository {
         this.dao = dao;
     }
 
-    registerUser = async (userData) => {
-        const newUser = new UserDTO(userData);
-        const result = await this.dao.addUser(newUser);
+    addUser = async (userData) => {
+        const result = await this.dao.addUser(userData);
         return result;
     }
 
-    loginUser = async (userData) => {
-        const { email, password } = userData;
-        const user = await this.dao.getUserByEmail(email);
-        if (!user || user.password !== password) {
-            throw new Error('Credenciales inválidas');
+    getUser = async (email) => {
+        const user = await this.dao.getUser(email);
+        if (!user) {
+            throw new Error('Usuario no encontrado');
         }
         return user;
+    }
+    
+    getUserId = async(id) => {
+        const result = await this.dao.getUserId(id)
+        return result
     }
 
     logoutUser = async () => {
@@ -37,23 +40,16 @@ export default class UserRepository {
         return result;
     }
 
-    getUser = async (email) => {
-        const user = await this.dao.getUser(email);
-        if (!user) {
-            throw new Error('Usuario no encontrado');
-        }
-        return user;
-    }
 
-    githubAuth = async () => {
-        // Implementa la lógica de autenticación de GitHub aquí
+    // githubAuth = async () => {
+    //     // Implementa la lógica de autenticación de GitHub aquí
 
-    }
+    // }
     
-    githubCallback = async () => {
-        // Implementa la lógica de callback de autenticación de GitHub aquí
+    // githubCallback = async () => {
+    //     // Implementa la lógica de callback de autenticación de GitHub aquí
 
-    }
+    // }
 
     getCurrentUser = async (req) => {
         try {

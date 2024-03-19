@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCarts, getCartById, postCart, postProductInCart, deleteAllCartById, deleteProductInCart, putCartById, putProductInCart, purchaseCartById } from "../controllers/carts.controller.js";
+import { getCarts, getCartById, postCart, postProductInCart, deleteAllProductsInCart, deleteProductInCart, putCartById, putProductInCart, purchaseCartById } from "../controllers/carts.controller.js";
 import { authorization } from "../middlewares/auth.js";
 
 const cartsRouter = Router();
@@ -12,7 +12,7 @@ cartsRouter.post('/', postCart );
   
 cartsRouter.post("/:cId/product/:pId", authorization('usuario'), postProductInCart );
   
-cartsRouter.delete('/:cId', authorization('usuario'), deleteAllCartById );
+cartsRouter.delete('/:cId', authorization('usuario'), deleteAllProductsInCart );
   
 cartsRouter.delete('/:cId/products/:pId', authorization('usuario'), deleteProductInCart );  
   

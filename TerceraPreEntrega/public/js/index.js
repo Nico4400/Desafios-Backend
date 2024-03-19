@@ -38,7 +38,6 @@ function createProduct() {
 // Funcion para eliminar productos
 function deleteProduct() {
     const productIdToDelete = document.getElementById('productIdToDelete').value;
-
     // Emitir un mensaje a través de WebSockets para eliminar un producto
     socket.emit('delete_product', productIdToDelete);
 }

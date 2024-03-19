@@ -31,6 +31,15 @@ socket.on('chatLogs', (chats) => {
             <p>Descripción: ${chat.message}</p>            
         `;
         listItem.innerHTML = chatInfo;
+        controllers
+        carts.controller.js
+        chats.controller.js
+        products.controller.js
+        sessions.controller.js
+        ticket.controller.js
+        views.controller.js
+        dao
+        
         chatList.appendChild(listItem);
     });
 });

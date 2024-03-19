@@ -5,7 +5,7 @@ export class UserManager {
     async getUser(email) {
         try {
             const user = await userModel.findOne({ email: email });
-            if(user) {
+            if(user) {                
                 return {message: "OK" , rdo: user}
             } else {
                 return {message: "ERROR" , rdo: "El Usuario no existe"}
@@ -32,8 +32,9 @@ export class UserManager {
         try{
             const validation = !user.first_name || !user.last_name || !user.email || !user.age || !user.password ? false : true;
             if (!validation)
-                return {message: "ERROR" , rdo: "Faltan datos en la creacion del usuario"}    
+                return {message: "ERROR" , rdo: "Faltan datos en la creacion del usuario", user}    
             const added = await userModel.create(user);
+            console.log("a",added);
             return {message: "OK" , rdo: added}
         } catch (err) {
             console.error("Error al dar de alta el usuario:", user);

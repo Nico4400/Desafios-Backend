@@ -20,7 +20,7 @@ export class TicketManager {
   async addTicket(ticket) {
     try {
       const added = await ticketModel.create(ticket)      
-      return {message: "OK" , rdo: added._id}
+      return {message: "OK" , rdo: added}
     } 
     catch (e) {
       return {message: "ERROR" , rdo: "Error al agregar el ticket." + e.message}

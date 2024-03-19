@@ -19,8 +19,8 @@ import ticketRouter from './routes/tickets.routes.js';
 
 import ProductManager from './dao/managers/ProductManager.js';
 import { ChatManager } from './dao/managers/ChatManager.js';
+import { productService } from './dao/repositories/index.repository.js';
 import { secret } from './config/consts.js'
-
 
 const fileStore = FileStore(session);
 const app = express();
@@ -106,7 +106,7 @@ io.on('connection', socket => {
     
     // Actualización a todos los clientes
     const emitProductUpdate = async () => {
-        const updatedProducts = await productManager.getProducts();
+        const updatedProducts = await productService.getProducts();
         console.log('Type of updatedProducts:', typeof updatedProducts);
         io.emit('update_products', updatedProducts);
     };    
@@ -114,16 +114,30 @@ io.on('connection', socket => {
     // Después de crear un producto
     socket.on('create_product', async productData => {
         // Lógica para crear un producto
-        await productManager.addProduct(productData);
+        
+        await productService.addProduct(productData);
         
         // Actualización a todos los clientes después de crear un producto
         emitProductUpdate();
     });
 
     // Eliminar un producto
-    socket.on('delete_product', async productId => {
-        // Lógica para eliminar un producto
-        await productManager.deleteProduct(productId);
+    socket.on('delete_product', async productIdToDelete => {
+        try {
+            // Lógica para eliminar un producto
+            console.log("Eliminar producto con ID:", productIdToDelete);
+            const response = await productService.deleteProduct(productIdToDelete);    
+            // Si la eliminación fue exitosa, emitir un evento de actualización
+            if (response.message === 'OK') {
+                io.emit('product_deleted', productIdToDelete);
+            } else {
+                console.error('Error al eliminar producto:', response.rdo);
+                // Puedes emitir un evento de error al cliente si lo deseas
+            }
+        } catch (error) {
+            console.error('Error al eliminar producto:', error.message);
+            // Puedes emitir un evento de error al cliente si lo deseas
+        }
         
         // Actualización a todos los clientes después de eliminar un producto
         emitProductUpdate();

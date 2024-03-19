@@ -5,26 +5,13 @@ export default class TicketRepository {
     this.dao = dao;
   }
 
-  async getTicketById(ticketId) {
-    try {
-      const ticket = await this.dao.getTicketById(ticketId);
-      if (ticket) {
-        return { message: "OK", rdo: ticket };
-      } else {
-        return { message: "ERROR", rdo: "El ticket no existe" };
-      }
-    } catch (error) {
-      return { message: "ERROR", rdo: "Error al obtener el ticket solicitado - " + error.message, ticketId };
-    }
+  async getTicketById(tId) {
+    const result = await this.dao.getTicketById(tId)
+    return result
   }
-
+  
   async addTicket(ticketData) {
-    try {
-      const newTicket = new TicketDTO(ticketData);
-      const addedTicketId = await this.dao.addTicket(newTicket);
-      return { message: "OK", rdo: addedTicketId };
-    } catch (error) {
-      return { message: "ERROR", rdo: "Error al agregar el ticket: " + error.message };
-    }
+    const result = await this.dao.addTicket(ticketData)
+    return result
   }
 }
