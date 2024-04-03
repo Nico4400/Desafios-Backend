@@ -20,7 +20,9 @@ export const getVariables = (options) => {
         adminName: process.env.ADMIN_NAME,
         adminPassword: process.env.ADMIN_PASSWORD,
         persistence: process.env.PERSISTENCE,
+        googleUser: process.env.GOOGLE_USER,
         googlePass: process.env.GOOGLE_PASSWORD,
+        mailingService: process.env.MAILING_SERVICE,
         NODE_ENV: process.env.NODE_ENV
     }
 }

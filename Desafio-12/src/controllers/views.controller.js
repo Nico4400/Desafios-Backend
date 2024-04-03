@@ -78,6 +78,10 @@ export const getRestorePassword = (req, res) => {
     res.render('restore-password');
 };
 
+export const getUpdatePassword = (req, res) => {
+    res.render('update-password');
+};
+
 export const getFailLogin = (req, res) => {
     res.render('faillogin');
 };

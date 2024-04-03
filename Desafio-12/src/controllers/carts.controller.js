@@ -5,6 +5,7 @@ import { generateCode } from "../utils/functions.js";
 import ErrorEnum from "../services/errors/error.enum.js";
 import CustomErrors from "../services/errors/CustomError.js";
 import { getCartErrorInfo, getSingleProductErrorInfo } from "../services/errors/info.js";
+import MailingService from "../services/mailing/nodemailer.js";
 
 
 // Obtener todos los carritos
@@ -192,7 +193,21 @@ export const purchaseCartById = async (req, res) => {
         return res.send({ message: 'Some products could not be purchased', products: noStockProducts })
     } else {
         await cartService.deleteAllProductsInCart(cId) //Se vacía el carrito
-        // return res.send(ticket)
+        
+        //Generamos mail con el ticket.
+        const mailingService = new MailingService()
+        await mailingService.sendSimpleMail({
+            from: 'Ticket',
+            to: ticket.rdo.purchaser,
+            subject: 'Your order is done!',
+            html: `
+                <div>
+                    <h1>We just received your order</h1>
+                    <p>The ticket number is: <b>${ticket.rdo.code}</b></p>
+                    <a href="http://localhost:8080/ticket/${ticket.rdo._id}" target="_blank" rel="noopener noreferrer">Link Ticket</a>
+                </div>
+            `
+        })
         return res.redirect('/ticket/' + ticket.rdo._id);
     }
 }

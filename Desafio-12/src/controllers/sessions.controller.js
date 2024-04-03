@@ -1,5 +1,6 @@
 import { userService } from "../dao/repositories/index.repository.js";
 import { createHash } from "../utils/bcrypt.js";
+import MailingService from "../services/mailing/nodemailer.js";
 import UserDTO from "../dtos/user.dto.js";
 
 export const postRegister = async (req, res) => {
@@ -55,7 +56,37 @@ export const postLogout = async(req, res) => {
     }
 };
 
-export const postRecovery = async (req, res) => {
+export const postRestore = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await userService.getUser(email);
+        if (user.message !== 'OK') {
+            return res.status(401).send({ message: "Unauthorized" });
+        }
+        const mailingService = new MailingService()
+        mailingService.sendSimpleMail({
+            from: 'Notification <nico.fernandezcastillo@gmail.com>',
+            to: user.rdo.email,
+            subject: 'We received a request to update your password',
+            html: `
+                <h1>Update your password</h1>
+                <div>                
+                    <p>Hi ${user.rdo.first_name},</p>
+                    <p>We received a request that you want to update your password. You can do this by clicking the link below.</p>
+                    <p>This request expires in 1 hour.</p>
+                    <a href="http://localhost:8080/update-password" target="_blank" rel="noopener noreferrer">Restore Password</a>
+                    <p>If you didn't make this request, you don't need to do anything.</p>
+                </div>
+            `
+        })
+        res.send({message: 'Mail sent'})
+    } catch (error) {
+        req.logger.warn(error);
+        res.status(400).send({ error });
+    }
+}
+
+export const postUpdate = async (req, res) => {
     console.log('Reached restore-password route');
     const { email, password } = req.body;
     try {

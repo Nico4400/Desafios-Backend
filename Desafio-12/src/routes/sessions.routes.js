@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import  { authorization } from "../middlewares/auth.js"
-import { postRegister, postLogin, postLogout, postRecovery, githubAuth, githubCallback, getCurrent, putRole } from "../controllers/sessions.controller.js";
+import { postRegister, postLogin, postLogout, postUpdate, postRestore, githubAuth, githubCallback, getCurrent, putRole } from "../controllers/sessions.controller.js";
 
 
 const sessionsRouter = Router();
@@ -14,7 +14,9 @@ sessionsRouter.post('/login',
   
 sessionsRouter.post('/logout', postLogout );
 
-sessionsRouter.post('/recovery', postRecovery );
+sessionsRouter.post('/restore-password', postRestore );
+
+sessionsRouter.post('/update-password', postUpdate );
 
 sessionsRouter.put('/premium/:uId', putRole );
 
