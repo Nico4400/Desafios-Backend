@@ -1,0 +1,16 @@
+<div>
+    <h1>Chat del e-commerce</h1>
+    <br>
+    <br>
+    <form action="/api/chats" method="post">
+        <label for="">Usuario: </label><input type="text" id="userName" name="user"><br><br>
+        <label for="">Mensaje: </label><input type="text" id="userChat" name="message"><br><br><br>
+        <button type="button" onclick="createChat()">Enviar Mensaje</button>
+    </form>
+    <button><a href="/">Home</a></button>
+    {{!-- Para crear el listado de Productos --}}
+    <ul id="chatList"></ul>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/chat.js"></script>
