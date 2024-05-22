@@ -59,6 +59,7 @@ socket.on('update_products', (products) => {
         listItem.classList.add('product');
 
         const productInfo = `
+            <h2>${product._id}</h2>
             <h2>${product.title}</h2>
             <p>Descripción: ${product.description}</p>
             <p>Código: ${product.code}</p>
