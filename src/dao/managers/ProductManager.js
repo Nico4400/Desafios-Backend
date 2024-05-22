@@ -1,4 +1,6 @@
 import { productModel } from '../models/product.model.js';
+import { userModel } from '../models/user.model.js';
+import MailingService from '../../services/mailing/nodemailer.js';
 
 
 // Declaro la clase.
@@ -86,15 +88,42 @@ class ProductManager {
     // Borro Prod según ID.
     async deleteProduct(id) {
         try {
-            const deleted = await productModel.deleteOne({_id: id});    
-            if (deleted.deletedCount === 0) {
-                return {message: "ERROR" , rdo: `No se encontró un producto con el ID ${id}. No se pudo eliminar.`}
-            } else {
-                return {message: "OK" , rdo: `Producto con ID ${id} eliminado exitosamente.`}
+            // Buscar el producto para obtener su propietario
+            const product = await productModel.findById(id).populate('owner');
+            if (!product) {
+                return {message: "ERROR", rdo: `No se encontró un producto con el ID ${id}. No se pudo eliminar.`};
             }
-        } 
-        catch (e) {
-            return {message: "ERROR" , rdo: "Error al momento de eliminar el producto - "+ e.message}
+
+            // Eliminar el producto
+            const deleted = await productModel.deleteOne({_id: id});
+            if (deleted.deletedCount === 0) {
+                return {message: "ERROR", rdo: `No se encontró un producto con el ID ${id}. No se pudo eliminar.`};
+            }
+
+            // Verificar si el propietario es un usuario premium
+            const owner = product.owner;
+            if (owner.role === 'premium') {
+                try {
+                    const mailingService = new MailingService();
+                    await mailingService.sendSimpleMail({
+                        from: 'E-commerce',
+                        to: owner.email,
+                        subject: 'Notificación de eliminación de producto',
+                        html: `
+                            <div>
+                                <h1>Hola ${owner.first_name}</h1>
+                                <p>Tu producto con el título "${product.title}" ha sido eliminado de nuestra plataforma.</p>
+                            </div>
+                        `,
+                    });
+                } catch (error) {
+                    console.error(`Error al enviar correo electrónico a ${owner.email}:`, error);
+                }
+            }
+
+            return {message: "OK", rdo: `Producto con ID ${id} eliminado exitosamente.`};
+        } catch (e) {
+            return {message: "ERROR", rdo: "Error al momento de eliminar el producto - " + e.message};
         }
     }
 

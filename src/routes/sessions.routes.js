@@ -1,10 +1,12 @@
 import { Router } from "express";
 import passport from "passport";
 import  { authorization } from "../middlewares/auth.js"
-import { postRegister, postLogin, postLogout, postUpdate, postRestore, githubAuth, githubCallback, getCurrent, putRole } from "../controllers/sessions.controller.js";
+import { getAllUsers, postRegister, postLogin, postLogout, postUpdate, postRestore, githubAuth, githubCallback, getCurrent, putRole, deleteUser, deleteUsers } from "../controllers/sessions.controller.js";
 
 
 const sessionsRouter = Router();
+
+sessionsRouter.get('/', getAllUsers);
 
 sessionsRouter.post('/register',
     passport.authenticate("register", { failureRedirect: "/failregister" }), postRegister );
@@ -27,5 +29,9 @@ sessionsRouter.get('/githubcallback',
     passport.authenticate("github", { failureRedirect: "/login" }), githubCallback );
 
 sessionsRouter.get('/current', authorization('usuario'), getCurrent );
+
+sessionsRouter.delete('/:uId', authorization('admin'), deleteUser);
+
+sessionsRouter.delete('/', authorization('admin'), deleteUsers);
 
 export default sessionsRouter;

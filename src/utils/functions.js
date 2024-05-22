@@ -9,3 +9,19 @@ export function generateCode() {
 
   return codigo;
 }
+
+export function actualDate(){
+  //Obtengo la fecha actual, restandole 3 horas por el UTC
+  const currentDate = new Date()
+  const utcHours = currentDate.getUTCHours() - 3 
+  
+  const utcDate = new Date(Date.UTC(
+        currentDate.getUTCFullYear(),
+        currentDate.getUTCMonth(),
+        currentDate.getUTCDate(),
+        (utcHours < 0) ? (utcHours + 24) : utcHours,
+        currentDate.getUTCMinutes(),
+        currentDate.getUTCSeconds()
+  ))  
+  return utcDate
+}

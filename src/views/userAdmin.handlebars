@@ -1,0 +1,32 @@
+<div>
+  <h2>Lista de Usuarios</h2>
+  <div>
+    <div>
+        <input type="hidden" id="productOwner" value="{{user.rdo._id}}">
+        <p>Welcome back, {{user.rdo.first_name}} {{user.rdo.last_name}}!</p>
+        <p>Email: {{user.rdo.email}}</p>
+        <p>Age: {{user.rdo.age}}</p>
+        <span>Role: {{user.rdo.role}}</span>
+        <br /><br />
+    </div>
+    <button><a href="/">Home</a></button>
+    <button id="logoutBtn" type="button">Cerrar sesión</button>
+    <button id="deleteAllBtn" type="button">Eliminar los Usuarios Inactivos</button>
+  </div>
+  <div>
+    {{#each data}}
+      <div>
+        <p><b>Id:</b> {{this._id}}</p>
+        <p><b>Nombre:</b> {{this.first_name}} {{this.last_name}} </p>
+        <p><b>Email:</b> {{this.email}}</p>
+        <p><b>Role:</b> {{this.role}}</p>
+        <div>
+          <button id={{this._id}} name="btn-change-rol" class='btnRol' data-role='{{this.role}}'>Modificar Rol</button>
+          <button id={{this._id}} name="btn-delete-user" class='btnEliminar'>Eliminar</button>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<script src="js/session.js"></script>

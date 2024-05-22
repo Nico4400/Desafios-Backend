@@ -1,16 +1,17 @@
 import ProductManager from "../dao/managers/ProductManager.js";
 import CartManager from "../dao/managers/CartManager.js";
 import TicketManager from "../dao/managers/TicketManager.js";
+import UserManager from "../dao/managers/UserManager.js";
 
 const productManager = new ProductManager();
 const cartManager = new CartManager();
 const ticketManager = new TicketManager();
+const userManager = new UserManager();
 
 
-export const getHome = async (req, res) => {
-    const {limit} = req.query;
-    const products = await productManager.getProducts(limit);
-    return res.render('home', { products });
+export const getHome = async (req, res) => {    
+    const products = await productManager.getProducts();
+    return res.render('home', {products});
 };
 
 export const getRealTimeProducts = async (req, res) => {    
@@ -62,7 +63,6 @@ export const getChat = async (req, res) => {
 // Vistas para acceso
 export const getIndex = (req, res) => {
     const user = req.user;
-    console.log(user)
     res.render('index', user.rdo);
 };
 
@@ -88,4 +88,15 @@ export const getFailLogin = (req, res) => {
 
 export const getFailRegister = (req, res) => {
     res.render('failregister');
+};
+
+export const getUserAdmin = async (req, res) =>{
+    try {
+        const user = req.user;
+        const result = await userManager.getUsers();
+        return res.render('userAdmin', { title: "Usuario", data: result.rdo, user });     
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({message: 'users not found'});
+    }
 };

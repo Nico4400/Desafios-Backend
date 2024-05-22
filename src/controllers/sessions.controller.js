@@ -3,6 +3,23 @@ import { createHash } from "../utils/bcrypt.js";
 import MailingService from "../services/mailing/nodemailer.js";
 import UserDTO from "../dtos/user.dto.js";
 
+
+export const getAllUsers = async (req, res, next) => {
+    try {
+        const result = await userService.getUsers();
+        let users = [];
+
+        result.rdo.forEach((user) => {
+            const userFormatted = new UserDTO(user) 
+            users.push(userFormatted.getCurrentUser())
+        });
+        
+        res.send({status: 'success', payload: users});
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const postRegister = async (req, res) => {
     try {
         const userData = req.user;
@@ -35,6 +52,7 @@ export const postLogin = async (req, res) => {
             email: req.user.email,
             role: req.user.role
         }
+        const result = await userService.updateLastConnection(req.user.rdo.email)
         res.redirect('/');
     } catch (error) {
         console.error(error);
@@ -147,5 +165,35 @@ export const getCurrent = async (req, res) => {
         // Si ocurre algún error, envía una respuesta de error con el mensaje de error
         res.status(400).json({ message: error.message });
     }
+};
 
+export const deleteUser = async (req, res) => {
+    const { uId } = req.params
+    try {  
+        const result = await userService.deleteUser(uId)
+        if (result.message==="OK") {
+            return res.status(200).json(result)
+            } else {
+                res.status(400).json(result)
+            }
+    } catch (error) {
+        res.status(400).json({message: `No podemos eliminar al usuario - ${error}`})
+    }
+}
+
+export const deleteUsers= async (req, res, next) => {
+    try {
+        console.log("Iniciando proceso de eliminación de usuarios inactivos");
+        const result = await userService.deleteUsersLastConection();
+        console.log("Resultado del proceso:", result);
+        
+        if (result.message==="OK") {
+        return res.status(200).json(result)
+        } else {
+            res.status(400).json(result)
+        }
+    } catch (error) {
+        console.error("Error en el controlador deleteUsers:", error);
+        res.status(400).json({message: `No podemos eliminar los usuarios inactivos - ${error}`})
+    } 
 };

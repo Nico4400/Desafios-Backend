@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkAuth, checkExistingUser, authorization } from '../middlewares/auth.js'
-import { getHome, getRealTimeProducts, postRealTimeProducts, getProducts, getCartById, getTicketById, getChat, getIndex, getLogin, getRegister, getRestorePassword, getUpdatePassword, getFailLogin, getFailRegister } from "../controllers/views.controller.js";
+import { getHome, getRealTimeProducts, postRealTimeProducts, getProducts, getCartById, getTicketById, getChat, getIndex, getLogin, getRegister, getRestorePassword, getUpdatePassword, getFailLogin, getFailRegister, getUserAdmin } from "../controllers/views.controller.js";
 import { getCurrent } from "../controllers/sessions.controller.js";
 
 const viewsRouters = Router();
@@ -36,5 +36,7 @@ viewsRouters.get('/update-password', checkExistingUser, getUpdatePassword);
 viewsRouters.get('/faillogin', getFailLogin );
 
 viewsRouters.get('/failregister', getFailRegister );
+
+viewsRouters.get('/userAdmin', checkAuth, authorization('admin'), getUserAdmin);
 
 export default viewsRouters;

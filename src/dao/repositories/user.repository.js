@@ -5,6 +5,11 @@ export default class UserRepository {
         this.dao = dao;
     }
 
+    getUsers = async (users) => {
+        const result = await this.dao.getUsers(users)
+        return result
+    }
+
     addUser = async (userData) => {
         const result = await this.dao.addUser(userData);
         return result;
@@ -28,7 +33,6 @@ export default class UserRepository {
         return response;
     }
 
-
     getCurrentUser = async (req) => {
         try {
             // Verifica si hay una sesión y si hay un usuario autenticado (su ID) en la sesión
@@ -47,5 +51,20 @@ export default class UserRepository {
         } catch (error) {
             throw new Error('Error al obtener el usuario actual: ' + error.message);
         }
+    }
+
+    updateLastConnection = async(id) => {
+        const result = await this.dao.updateLastConnection(id)
+        return result
+    } 
+
+    deleteUser = async(id) => {
+        const result = await this.dao.deleteUser(id)
+        return result
+    } 
+
+    deleteUsersLastConection = async() => {
+        const result = await this.dao.deleteUsersLastConection()
+        return result
     }
 }

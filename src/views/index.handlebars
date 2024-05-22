@@ -10,13 +10,19 @@
     <span>Role: {{role}}</span>
     <br /><br />
 </div>
+
+<input type="hidden" id="currentRole" value="{{role}}">
+
 <button id="logoutBtn" type="button">Cerrar sesión</button>
 
 <button id="createBtn" type="button">Crear Productos</button>
 
 <button id="productsBtn" type="button">Ver Productos</button>
 
-<button><a href="/chat">Chat</a></button>
+<button id="chatBtn" style="display: none;"><a href="/chat">Chat</a></button>
+
+<button id="adminBtn" style="display: none;"><a href="/userAdmin">Vista Admin</a></button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/session.js"></script>
+<script src="js/index.js"></script>

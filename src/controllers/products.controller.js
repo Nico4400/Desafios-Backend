@@ -1,4 +1,3 @@
-// import ProductManager from "../dao/managers/ProductManager.js";
 import { productService , userService } from "../dao/repositories/index.repository.js";
 import ProductDTO from "../dtos/product.dto.js";
 import ErrorEnum from "../services/errors/error.enum.js";
