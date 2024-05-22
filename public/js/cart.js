@@ -7,7 +7,7 @@ if(emptyCartBtn){
         e.preventDefault()
         const cId = document.getElementById('cId').value;
         console.log('Valor de cId:', cId);
-        const response = await fetch(`http://localhost:8080/api/carts/${cId}`, {
+        const response = await fetch(`/api/carts/${cId}`, {
             method: 'delete',
         })
     

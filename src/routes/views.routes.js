@@ -18,7 +18,7 @@ viewsRouters.get('/carts/:cId', checkAuth, getCartById );
   
 viewsRouters.get('/ticket/:tId', checkAuth, getTicketById );
 
-viewsRouters.get('/chat',authorization('user', 'premium'), getChat );
+viewsRouters.get('/chat',authorization('usuario', 'premium'), getChat );
 
 viewsRouters.get("/current", getCurrent);
 

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const { redirect } = await result.json();
-            window.location.href = redirect;
+            window.location.href = redirect || '/login';
         });
     }
 

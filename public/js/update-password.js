@@ -6,7 +6,7 @@ const resultMessage = document.getElementById('resultMessage');
 restoreBtn.addEventListener('click', async (e) => {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const result = await fetch('http://localhost:8080/api/sessions/update-password', {
+    const result = await fetch('/api/sessions/update-password', {
         body: JSON.stringify({email, password}),
         headers: {
             'Content-Type': 'application/json',

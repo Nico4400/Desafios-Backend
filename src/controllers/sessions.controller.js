@@ -66,7 +66,7 @@ export const postLogout = async(req, res) => {
             if(err){
                 return res.status(500).json({ message: 'Logout failed' });
             }
-            res.json({ redirect: 'http://localhost:8080/login' });
+            res.json({ redirect: '/login' });
         });
     } catch (error) {
         console.error(error);

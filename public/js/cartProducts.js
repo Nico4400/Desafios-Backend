@@ -8,7 +8,7 @@ const addProductToCart = async (pId) => {
             alert('No se ha proporcionado el ID del carrito');
             return;
         }
-        const result = await fetch(`http://localhost:8080/api/carts/${cId}/product/${pId}`, {
+        const result = await fetch(`/api/carts/${cId}/product/${pId}`, {
             body: JSON.stringify({
                 quantity: 1
             }),
@@ -34,7 +34,7 @@ btns.forEach(btn => {
 });
 
 logoutBtn.addEventListener('click', async (e) => {
-    const result = await fetch('http://localhost:8080/api/sessions/logout', {
+    const result = await fetch('/api/sessions/logout', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
