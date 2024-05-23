@@ -82,7 +82,6 @@ export const postRestore = async (req, res) => {
             return res.status(401).send({ message: "Unauthorized" });
         }
         const mailingService = new MailingService()
-        const currentUrl = 'http://localhost:8080' || 'https://desafios-backend-production-f091.up.railway.app/'
         mailingService.sendSimpleMail({
             from: 'Notification <nico.fernandezcastillo@gmail.com>',
             to: user.rdo.email,
@@ -93,7 +92,7 @@ export const postRestore = async (req, res) => {
                     <p>Hi ${user.rdo.first_name},</p>
                     <p>We received a request that you want to update your password. You can do this by clicking the link below.</p>
                     <p>This request expires in 1 hour.</p>
-                    <a href="http://localhost:8080/update-password" || "https://desafios-backend-production-f091.up.railway.app/update-password" target="_blank" rel="noopener noreferrer">Restore Password</a>
+                    <a href="http://localhost:8080/update-password" target="_blank" rel="noopener noreferrer">Restore Password</a>
                     <p>If you didn't make this request, you don't need to do anything.</p>
                 </div>
             `
